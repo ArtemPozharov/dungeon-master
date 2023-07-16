@@ -1,0 +1,71 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование объекта знания</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Редактирование объекта знания</h1>
+    
+    <form action="/edit" method="POST">
+        <input type="hidden" name="object_id" value="{{ object_data[0] if object_data else '' }}">
+        <label for="name">Название:</label>
+        <input type="text" name="name" id="name" value="{{ object_data[2] if object_data else '' }}" required><br>
+
+        <label for="category">Категория:</label>
+        <select name="category" id="category" required>
+            {% for category in categories %}
+            <option value="{{ category[0] }}" {% if object_data and object_data[1] == category[0] %}selected{% endif %}>{{ category[1] }}</option>
+            {% endfor %}
+        </select>
+        
+        <textarea name="text" id="text" required>{{ object_data[3] if object_data else '' }}</textarea>        
+
+        <script src="https://cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('text');
+        </script>
+
+        <input type="submit" value="💾">
+    </form>
+</body>
+</html>
